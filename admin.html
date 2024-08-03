@@ -111,14 +111,14 @@ html, body {
     </div>
 
     <script>
-        // Wait for the DOM to fully load
+// Wait for the DOM to fully load
 document.addEventListener("DOMContentLoaded", function() {
     const form = document.querySelector("form");
 
     // Function to validate form inputs
     function validateForm() {
-        const username = form.querySelector("input[type='EyeconTECH']").value;
-        const password = form.querySelector("input[type='www.eyetech.site']").value;
+        const username = form.querySelector("input[type='text']").value;
+        const password = form.querySelector("input[type='password']").value;
 
         // Basic validation checks
         if (username === "") {
@@ -141,10 +141,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // Validate form inputs
         if (validateForm()) {
-            // Handle form submission (e.g., send data to the server)
-            alert("Login successful!");
-            // Optionally, redirect or process login
-            window.location.href = "registered.html"; // Example redirect
+            // Redirect to registered.html
+            window.location.href = "registered.html";
         }
     });
 });
