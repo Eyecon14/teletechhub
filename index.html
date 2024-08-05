@@ -47,6 +47,13 @@
                     font-size: 18px;
                     cursor: pointer;
                 }
+
+                .desktop-menu {
+                    display: flex;
+                    align-items: center; /* Center items vertically */
+                    justify-content: space-between; /* Space out items */
+                    padding: 10px; /* Adjust padding as needed */
+                }
         
                 .phone-menu {
                     display: flex;
@@ -730,13 +737,15 @@
 </head>
 <body>
     <header>
-            <!-- Modal Structure -->
-    <div id="telegramModal" class="modal">
-        <div class="modal-content">
-            <img src="imgs/tele.jpeg" alt="Telegram" class="modal-image" height="300" width="320">
-            <button class="modal-button">Join</button>
-        </div>
+<!-- Modal Structure -->
+<div id="telegramModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <img src="imgs/tele.jpeg" alt="Telegram" class="modal-image">
+        <button class="modal-button">Join</button>
     </div>
+</div>
+
         <div class="top-bar">
             <div class="contact-info">
                 <a href="https://wa.me/qr/3JMHLF4XB3L7H1" class="icon" target="_blank" rel="noopener noreferrer">
@@ -988,41 +997,48 @@
         </div>
         <div class="footer-bottom">
             <p>&copy; 2024 TeleTech Hub. All rights reserved<a href="admin.html">.</a> <br>
-            Designed by: <a href="https://www.eyetech.site/bennett/ben.html">Eyecon</a></p>
+            Developer: <a href="https://www.eyetech.site/bennett/ben.html">Eyecon</a></p>
         </div>
     </footer>
     
     </header>
     <script>
-        // Function to display the modal
-function showModal() {
-    const modal = document.getElementById('telegramModal');
-    modal.style.display = 'block';
-}
-
-// Function to close the modal
-function closeModal() {
-    const modal = document.getElementById('telegramModal');
-    modal.style.display = 'none';
-}
-
-// Show the modal every 5 minutes (300000 milliseconds)
-setInterval(showModal, 300000);
-
-// Close the modal if the user clicks outside of it
-window.onclick = function(event) {
-    const modal = document.getElementById('telegramModal');
-    if (event.target === modal) {
-        closeModal();
-    }
-};
-
-// Optional: Close the modal when the "Join" button is clicked
-document.querySelector('.modal-button').addEventListener('click', function() {
-    // Handle the "Join" button click event
-    // For example, redirect to a Telegram group or other action
-    window.location.href = 'https://t.me/teletechhub'; // Replace with your Telegram group link
-});
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to display the modal
+            function showModal() {
+                const modal = document.getElementById('telegramModal');
+                modal.style.display = 'block';
+            }
+        
+            // Function to close the modal
+            function closeModal() {
+                const modal = document.getElementById('telegramModal');
+                modal.style.display = 'none';
+            }
+        
+            // Show the modal every 5 minutes (300000 milliseconds)
+            setInterval(showModal, 300000);
+        
+            // Close the modal if the user clicks outside of it
+            window.onclick = function(event) {
+                const modal = document.getElementById('telegramModal');
+                console.log(event.target); // Log the clicked target
+                if (event.target === modal) {
+                    closeModal();
+                }
+            };
+        
+            // Close the modal when the "Join" button is clicked
+            document.querySelector('.modal-button').addEventListener('click', function() {
+                // Handle the "Join" button click event
+                // For example, redirect to a Telegram group or other action
+                window.location.href = 'https://t.me/your-telegram-group'; // Replace with your Telegram group link
+            });
+        
+            // Close the modal when the close button (×) is clicked
+            document.querySelector('.close-button').addEventListener('click', closeModal);
+        });
+        
 
 
 const validSearchTerms = ['product1', 'product2', 'product3'];
