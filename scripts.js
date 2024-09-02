@@ -1,3 +1,16 @@
+document.getElementById("imei-orders").addEventListener("click", function() {
+});
+
+document.getElementById("servers-orders").addEventListener("click", function() {
+});
+
+document.getElementById("retail-orders").addEventListener("click", function() {
+});
+
+document.getElementById("advanced-history").addEventListener("click", function() {
+});
+
+
 document.addEventListener('DOMContentLoaded', function() {
     // Function to display the modal
     function showModal() {

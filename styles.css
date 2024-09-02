@@ -309,6 +309,61 @@ button:hover {
         .dropdown-menu1.show {
             display: block;
         }
+        
+        /* Ensure the dropdown menu is hidden by default */
+.dropdown-menu2 {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    padding: 0;
+    margin: 0;
+}
+
+/* Show the dropdown menu when hovering over the menu item */
+.menu-item:hover .dropdown-menu2 {
+    display: block;
+}
+
+/* Style for the dropdown menu items */
+.dropdown-menu2 li {
+    list-style-type: none;
+    padding: 8px 16px;
+    margin: 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.dropdown-menu2 li a {
+    text-decoration: none;
+    display: block;
+    color: black;
+}
+
+/* Optional: Different styles for each dropdown item */
+.imei-order a {
+    color: #1a73e8; /* Blue for IMEI Orders */
+}
+
+.server-order a {
+    color: #34a853; /* Green for Server Orders */
+}
+
+.retail-order a {
+    color: #fbbc05; /* Yellow for Retail Orders */
+}
+
+.advanced-history a {
+    color: #ea4335; /* Red for Advanced History */
+}
+
+/* Ensure the dropdown stays visible when hovering over the dropdown itself */
+.menu-item:hover .dropdown-menu2,
+.dropdown-menu2:hover {
+    display: block;
+}
+
 
         
         .dropdown-menu {
