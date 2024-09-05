@@ -3,580 +3,802 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Funds and Payment</title>
+    <title>Multi-Step Add Funds</title>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTTXAB0EaipCcBqM3bR+14+1+qmc0z1B2fFJvFf0ueM2VajcXc9R1eCyp8ZKjLrAOKs1QkC1Yw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        /* Global Styles */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #1d2230;
-            color: #fff;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #141e30; /* Dark background */
+    background: linear-gradient(to right, #141e30, #243b55); /* Appealing gradient */
+    margin: 0;
+    padding: 0;
+    color: #ffffff; /* White text for contrast */
+}
 
-        .container {
-            width: 90%;
-            max-width: 500px;
-            background-color: #2d3448;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
+.form-container {
+    width: 90%;
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.8); /* Dark transparent background */
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5); /* Deeper shadow for more depth */
+    display: none; /* All forms hidden by default */
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease; /* Smooth transitions */
+}
 
-        /* Fund.html Styles */
-        .breadcrumb {
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
+.active {
+    display: block; /* Show active form */
+    opacity: 1;
+    transform: translateY(0); /* Smooth transition */
+}
 
-        .breadcrumb a {
-            color: #ccc;
-            text-decoration: none;
-        }
+.top-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
 
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
+.top-bar i {
+    margin-right: 10px;
+    cursor: pointer;
+}
 
-        .title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
+h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #04aa6d; /* Bright color for headings */
+}
 
-        .balance {
-            font-size: 18px;
-            background-color: #2a3345;
-            padding: 10px;
-            border-radius: 5px;
-            text-align: center;
-            margin-bottom: 20px;
-        }
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
 
-        .note {
-            background-color: #2a3345;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 14px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
+input[type="email"],
+input[type="number"],
+select {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #555;
+    background-color: #1c2b3a; /* Dark input background */
+    color: #b1c4d6; /* Light text color */
+}
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+input[type="email"]::placeholder,
+input[type="number"]::placeholder {
+    color: #b1c4d6; /* Lighter color for placeholders */
+}
 
-        .form-group label {
-            display: block;
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
+.balance-container,
+.info-message {
+    background-color: #243b55;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #04aa6d; /* Highlight balance section with brighter color */
+}
 
-        .form-group input {
-            width: 100%;
-            margin: -8px;
-            margin-top: 5px;
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-            font-size: 16px;
-        }
+.balance-container h4 {
+    margin: 0;
+    font-size: 24px;
+}
 
-        .dropdown {
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-            width: 100%;
-            font-size: 16px;
-            background-color: #444b59;
-            color: #fff;
-        }
+.deposit-now {
+    margin-bottom: 15px;
+}
 
-        .summary {
-            margin-top: 20px;
-            background-color: #2a3345;
-            padding: 10px;
-            border-radius: 5px;
-        }
+.payment-method {
+    margin-bottom: 20px;
+}
 
-        .summary div {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-        }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    color: #b1c4d6; /* Lighter text in table */
+}
 
-        .next-button {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
+table td {
+    padding: 10px;
+    border-bottom: 1px solid #555; /* Darker border for a more appealing look */
+}
 
-        .next-button a {
-            padding: 10px 20px;
-            background-color: #6b6de6;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+table tr:last-child td {
+    border-bottom: none;
+}
 
-        .next-button a:hover {
-            background-color: #5a5cd9;
-        }
+table td:first-child {
+    text-align: left;
+}
 
-        .footer {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 14px;
-        }
+table td:last-child {
+    text-align: right;
+}
 
-        /* Fund1.html Styles */
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+.total-row td:last-child {
+    font-weight: bold;
+}
 
-        .header img {
-            width: 100%;
-            border-radius: 5px;
-        }
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #04aa6d; /* Bright green button */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
 
-        .header p {
-            margin: 10px 0 0;
-            font-size: 14px;
-            color: #ccc;
-        }
+button i {
+    margin-left: 10px;
+}
 
-        .status {
-            text-align: right;
-            color: red;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
+button:hover {
+    background-color: #039f60; /* Darker green on hover */
+}
 
-        .order-details {
-            margin-bottom: 20px;
-        }
+/* Receipt Styles */
+.receipt-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
 
-        .order-details div {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
+.receipt-header img {
+    max-width: 150px;
+    height: auto;
+}
 
-        .table {
-            background-color: #2a3345;
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 20px;
-        }
+.status {
+    background-color: red;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
 
-        .table-header,
-        .table-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #444b59;
-        }
+.receipt-details {
+    margin-bottom: 20px;
+}
 
-        .table-row:last-child {
-            border-bottom: none;
-        }
+.receipt-details p {
+    margin: 5px 0;
+}
 
-        .payment-method button,
-        .pay-now button {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            color: #fff;
-            cursor: pointer;
-            margin-bottom: 10px;
-        }
+.description-table,
+.summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
 
-        .payment-method button {
-            background-color: #444b59;
-        }
+.description-table th,
+.description-table td,
+.summary-table th,
+.summary-table td {
+    border: 1px solid #555;
+    padding: 10px;
+    text-align: center;
+}
 
-        .pay-now button {
-            background-color: #28a745;
-            font-size: 18px;
-        }
+.summary-table td:first-child {
+    text-align: left;
+}
 
-        .pay-now button:hover {
-            background-color: #218838;
-        }
+.summary-table .grand-total {
+    font-weight: bold;
+    color: #04aa6d; /* Highlight grand total */
+}
 
-        .footer p {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #ccc;
-        }
+.warning-message {
+    background-color: #ffeeba;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #856404;
+}
 
-        .hidden {
-            display: none;
-        }
+/* Payment Forms Styles */
+.payment-details {
+    margin-bottom: 20px;
+}
 
-        .container {
-            max-width: 400px;
-            margin: 50px auto;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
+.payment-details p {
+    margin: 10px 0;
+}
 
-        .container h2 {
-            margin-bottom: 20px;
-            color: #333;
-        }
+.copyable {
+    border-radius: 20px;
+    font-size: 30px;
+    background-color: #008000;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
 
-        .info-block {
-            margin-bottom: 15px;
-        }
+.copyable span {
+    margin-right: 10px;
+    word-break: break-all;
+}
 
-        .info-block strong {
-            display: block;
-            margin-bottom: 5px;
-            color: #666;
-        }
+.copyable i {
+    cursor: pointer;
+    color: #04aa6d;
+}
 
-        .copyable {
-            background-color: #e9f5ff;
-            border-radius: 5px;
-            padding: 10px;
-            cursor: pointer;
-            color: #333;
-            transition: background-color 0.3s ease;
-        }
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #04aa6d; /* Match spinner to theme */
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: spin 2s linear infinite;
+    display: inline-block;
+    margin-left: 10px;
+}
 
-        .copyable:hover {
-            background-color: #d0ebff;
-        }
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
 
-        .cancel-button {
-            background-color: #FF4D4F;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            transition: background-color 0.3s ease;
-        }
+.change-payment {
+    color: #FF0000;
+    text-decoration: none;
+    cursor: pointer;
+}
 
-        .cancel-button:hover {
-            background-color: #e04344;
-        }
+.change-payment:hover {
+    text-decoration: underline;
+}
 
-        .pending-payment {
-            color: #FF9800;
-            font-size: 24px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+/* Responsive */
+@media (max-width: 600px) {
+    .form-container {
+        width: 95%;
+    }
+}
 
-        .pending-payment .spinner {
-            border: 3px solid rgba(255, 152, 0, 0.3);
-            border-top: 3px solid #FF9800;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
-            margin-left: 8px;
-        }
+/* Responsive for smaller screens */
+@media (max-width: 600px) {
+    body {
+        font-size: 14px; /* Slightly smaller text for smaller screens */
+    }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+    .form-container {
+        width: 90%;
+        padding: 15px; /* Reduce padding for better fit */
+        border-radius: 8px; /* Slightly smaller border radius */
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3); /* Lighter shadow */
+    }
 
-        .wallet-address, .amount-value {
-            background-color: #32C671;
-            color: white;
-            padding: 10px;
-            border-radius: 8px;
-            display: inline-block;
-            margin-bottom: 15px;
-            cursor: pointer;
-        }
+    .top-bar {
+        flex-direction: column; /* Stack items vertically on small screens */
+        align-items: flex-start;
+    }
 
-        .network-type-badge {
-            background-color: #61A4F1;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 8px;
-            display: inline-block;
-        }
+    .top-bar i {
+        margin-bottom: 10px; /* Space between icons */
+    }
 
-        .alert {
-            position: fixed;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #32C671;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 16px;
-            display: none;
-            z-index: 1000;
-        }
+    input[type="email"],
+    input[type="number"],
+    select {
+        padding: 8px; /* Slightly smaller padding */
+    }
+
+    button {
+        padding: 10px; /* Adjust padding for smaller screens */
+        font-size: 14px; /* Smaller font size */
+    }
+
+    .receipt-header img {
+        max-width: 120px; /* Smaller image on phones */
+    }
+
+    table td {
+        padding: 8px; /* Reduce padding in tables */
+    }
+
+    .spinner {
+        width: 20px; /* Smaller spinner */
+        height: 20px;
+    }
+
+    /* Additional adjustments for readability and space */
+    .balance-container,
+    .info-message,
+    .warning-message {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .copyable span {
+        font-size: 22px; /* Smaller text in copyable items */
+    }
+
+    .copyable i {
+        font-size: 16px; /* Smaller icon size */
+    }
+}
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Fund.html Section -->
-        <div id="fund-section">
-            <div class="breadcrumb">
-                <a href="#">Home</a> / <a href="#">+Add Funds</a>
+
+    <!-- Form 1: Add Funds -->
+    <div class="form-container active" id="form1">
+        <div class="top-bar">
+            <i class="fas fa-home" onclick="navigateTo('form1')"></i>
+            <span>Home / +Add Funds</span>
+        </div>
+
+        <h3>+ADD FUNDS</h3>
+
+        <!-- Email Entry -->
+        <div class="email-entry">
+            <label for="email">Your Email:</label>
+            <input type="email" id="email" placeholder="Enter your email" required>
+        </div>
+
+        <!-- Current Balance -->
+        <div class="balance-container">
+            <h4>$0.00</h4>
+            <p>Your current balance</p>
+        </div>
+
+        <!-- Info Message -->
+        <div class="info-message">
+            <p>
+                You can add funds to your account so that invoices are automatically paid 
+                when they are generated. All deposits are non-refundable.
+            </p>
+        </div>
+
+        <!-- Deposit Now -->
+        <div class="deposit-now">
+            <label for="deposit">Deposit Now:</label>
+            <input type="number" id="deposit" placeholder="0" min="50" max="10000">
+        </div>
+
+        <!-- Min and Max Deposit -->
+        <p>Minimum Deposit: $50.00 &nbsp;&nbsp;&nbsp; Maximum Deposit: $10,000.00</p>
+
+        <!-- Payment Method -->
+        <div class="payment-method">
+            <label for="payment-method">Method of Payment:</label>
+            <select id="payment-method">
+                <option value="binance">Binance</option>
+                <option value="usdt">USDT</option>
+                <option value="skrill">Skrill</option>
+            </select>
+        </div>
+
+        <!-- Charges Table -->
+        <table>
+            <tr>
+                <td>Deposit</td>
+                <td id="deposit-amount">$0.00</td>
+            </tr>
+            <tr>
+                <td>Fixed Charge</td>
+                <td id="fixed-charge">$0.00</td>
+            </tr>
+            <tr class="total-row">
+                <td>Total</td>
+                <td id="total">$0.00</td>
+            </tr>
+        </table>
+
+        <!-- Balance after deposit -->
+        <p>Balance after deposit: <span id="balance-after">$0.00</span></p>
+
+        <!-- Next Button -->
+        <button id="next-button" onclick="goToForm2()">Next <i class="fas fa-arrow-right"></i></button>
+    </div>
+
+    <!-- Form 2: Receipt -->
+    <div class="form-container" id="form2">
+        <div class="receipt-header">
+            <div>
+                <p>ORDER ID: <span id="order-id">tele#1234567890</span></p>
             </div>
-
-            <div class="title">+ADD FUNDS</div>
-
-            <div class="balance">$<span id="current-balance">0.00</span></div>
-            <div class="note">
-                * You can add funds to your account so that invoices are automatically paid when they are generated. All deposits are non-refundable.
-            </div>
-
-            <div class="form-group">
-                <label for="deposit">Deposit Now</label>
-                <input type="number" id="deposit-input" placeholder="0" oninput="updateValues()">
-                <div class="note">Minimum Deposit : $50.000  Maximum Deposit : $10,000.000</div>
-            </div>
-
-            <div class="form-group">
-                <label for="method">Select Payment Method</label>
-                <select id="method" class="dropdown">
-                    <option>Binance Pay | USDT | BTC</option>
-                    <option>Skrill</option>
-                </select>
-            </div>
-
-            <div class="summary">
-                <div><span>Deposit</span><span>$<span id="deposit-amount">0.00</span></span></div>
-                <div><span>Fixed Charge</span><span>$<span id="fixed-charge">0.00</span></span></div>
-                <div><span>Total</span><span>$<span id="total-amount">0.00</span></span></div>
-            </div>
-
-            <div class="next-button">
-                <a href="javascript:void(0);" onclick="goToFund1()">Next →</a>
-            </div>
-
-            <div class="footer">
-                Balance after deposit : $<span id="balance-after">0.00</span>
+            <div>
+                <span class="status">UnPaid</span>
             </div>
         </div>
 
-        <!-- Fund1.html Section (Initially Hidden) -->
-        <div id="fund1-section" class="hidden">
-            <div class="header">
-                <img src="logo.png" alt="Company Logo">
-                <p>401, Alien street, Red Planet. 444123.</p>
-            </div>
-
-            <div class="status">Unpaid</div>
-
-            <div class="order-details">
-                <div><span>Order ID</span><span id="order-id"></span></div>
-                <div><span>Date</span><span id="order-date"></span></div>
-                <div><span>Payment Due by</span><span id="due-date"></span></div>
-            </div>
-
-            <div class="table">
-                <div class="table-header">
-                    <span>DESCRIPTION</span>
-                    <span>QNT</span>
-                    <span>AMOUNT</span>
-                </div>
-                <div class="table-row">
-                    <span>+Add Funds</span>
-                    <span>1</span>
-                    <span>$<span id="final-amount">0.00</span></span>
-                </div>
-            </div>
-
-            <div class="summary">
-                <div><span>Sub Total</span><span>$<span id="sub-total">0.00</span></span></div>
-                <div><span>Shipping Charges</span><span>$0.00</span></div>
-                <div><span>Credit</span><span>$0.00</span></div>
-                <div><span>Total</span><span>$<span id="final-total">0.00</span></span></div>
-            </div>
-
-            <div class="payment-method">
-                <button id="payment-method">Binance Pay | USDT | BTC</button>
-            </div>
-
-            <div class="pay-now">
-                <button><a href="javascript:void(0);" onclick="goToFund2()">Pay Now →</a></button>
-            </div>
-
-            <div class="footer">
-                <p>401, Alien street, Red Planet. 444123.</p>
-            </div>
+        <!-- Company Logo and Address -->
+        <div class="receipt-details">
+            <img src="logo.jpg" alt="Company Logo"> <!-- Replace 'logo.jpg' with your actual logo path -->
+            <p>401, Allien Street, Red Planet. 44435334</p>
         </div>
-    </div>
 
-
-<!-- Fund2.html Section (Initially Hidden) -->
-<div id="fund2-section" class="container hidden">
-    <h2>Pending Payment</h2>
-
-    <div class="info-block">
-        <strong>Credits you receive:</strong>
-        <div id="credit-receive">
-            <!-- Filled by JavaScript -->
+        <!-- Receipt Information -->
+        <div class="receipt-details">
+            <p>Email: <span id="receipt-email">user@example.com</span></p>
+            <p>Order ID: <span id="receipt-order-id">tele#1234567890</span></p>
+            <p>Date: <span id="current-date">2024-09-05</span></p>
+            <p>Payment Due: <span id="payment-due">2024-09-05</span></p>
         </div>
-    </div>
 
-    <div class="info-block">
-        <strong>Store URL:</strong>
-        <a href="https://iosunlocks.com" target="_blank" style="color: #007BFF;">iosunlocks.com</a>
-    </div>
+        <!-- Description Table -->
+        <table class="description-table">
+            <thead>
+                <tr>
+                    <th>DESCRIPTION</th>
+                    <th>QNT</th>
+                    <th>AMOUNT</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>+AddFunds + <span id="description-order-id">tele#1234567890</span></td>
+                    <td>1</td>
+                    <td id="description-amount">$0.00</td>
+                </tr>
+            </tbody>
+        </table>
 
-    <button class="cancel-button">Cancel Payment</button>
+        <!-- Horizontal Line -->
+        <hr>
 
-    <div class="pending-payment">
-        <strong>Pending Payment</strong>
-        <div class="spinner"></div>
-    </div>
+        <!-- Summary Table -->
+        <table class="summary-table">
+            <tr>
+                <td>Sub Total</td>
+                <td id="summary-subtotal">$0.00</td>
+            </tr>
+            <tr>
+                <td>Shipping Charges</td>
+                <td>$0.00</td>
+            </tr>
+            <tr>
+                <td>Credit</td>
+                <td>$0.00</td>
+            </tr>
+            <tr class="grand-total">
+                <td>Grand Total</td>
+                <td id="summary-grandtotal">$0.00</td>
+            </tr>
+        </table>
 
-    <div class="info-block">
-        <strong>Wallet Address:</strong>
-        <div class="wallet-address" onclick="copyText('wallet')">
-            TSTZITazf8bxv4yi9fWYE4qeHhmsQuspE2
+        <!-- Payment Method Chosen -->
+        <p>Payment Method Chosen: <strong id="chosen-payment-method">Binance</strong></p>
+
+        <!-- Warning Message -->
+        <div class="warning-message">
+            Please ensure all details are correct before proceeding. Once payment is made, it cannot be reversed.
         </div>
+
+        <!-- Proceed Button -->
+        <button onclick="proceedToPayment()">PROCEED</button>
     </div>
 
-    <div class="info-block">
-        <strong>Network Type:</strong>
-        <div class="network-type-badge">
-            TRC20
+    <!-- Form 3: Binance Payment -->
+    <div class="form-container" id="form3">
+        <div class="top-bar">
+            <i class="fas fa-home" onclick="navigateTo('form1')"></i>
+            <span>Binance Payment</span>
         </div>
-    </div>
 
-    <div class="info-block">
-        <strong>Amount to send from Binance (Including Binance $1 fees):</strong>
-        <div id="amount-to-send">
-            <!-- Filled by JavaScript -->
+        <!-- Payment Details -->
+        <div class="payment-details">
+            <p>Email: <span id="payment3-email">user@example.com</span></p>
+            <p>Credits you receive: <span id="payment3-credits">$0.00</span></p>
+            <p>Store URL: <a href="https://teletechhub.com" target="_blank">teletechhub.com</a></p>
         </div>
-    </div>
 
-    <div class="info-block">
-        <strong>Payment Method:</strong>
-        <div id="payment-method-fund2">
-            <!-- Filled by JavaScript -->
+        <!-- Cancel Payment -->
+        <button onclick="cancelPayment()">Cancel Payment</button>
+
+        <!-- Pending Payment -->
+        <p>Pending Payment <div class="spinner"></div></p>
+
+        <!-- Binance ID -->
+        <div class="copyable">
+            <span id="binance-id">976270661</span>
+            <i class="fas fa-copy" onclick="copyText('binance-id')"></i>
         </div>
-    </div>
-</div>
+        <p>Click on the ID above to copy.</p>
 
+        <!-- Network Type -->
+        <p>Network type: TRC20</p>
+
+        <!-- Amount to Send -->
+        <div class="copyable">
+            <span id="binance-amount">$0.00</span>
+            <i class="fas fa-copy" onclick="copyText('binance-amount')"></i>
+        </div>
+        <p>Click on the amount above to copy.</p>
+
+        <!-- Change Payment Method -->
+        <p><a class="change-payment" onclick="navigateTo('form1')">I want to change how I pay</a></p>
+    </div>
+
+    <!-- Form 4: USDT Payment -->
+    <div class="form-container" id="form4">
+        <div class="top-bar">
+            <i class="fas fa-home" onclick="navigateTo('form1')"></i>
+            <span>USDT Payment</span>
+        </div>
+
+        <!-- Payment Details -->
+        <div class="payment-details">
+            <p>Email: <span id="payment4-email">user@example.com</span></p>
+            <p>Credits you receive: <span id="payment4-credits">$0.00</span></p>
+            <p>Store URL: <a href="https://teletechhub.com" target="_blank">teletechhub.com</a></p>
+        </div>
+
+        <!-- Cancel Payment -->
+        <button onclick="cancelPayment()">Cancel Payment</button>
+
+        <!-- Pending Payment -->
+        <p>Pending Payment <div class="spinner"></div></p>
+
+        <!-- Wallet Address -->
+        <div class="copyable">
+            <span id="usdt-wallet">TLNEJmdL1rCKbECUhGxVbEChedV6o68eFU</span>
+            <i class="fas fa-copy" onclick="copyText('usdt-wallet')"></i>
+        </div>
+        <p>Click on the ID above to copy.</p>
+
+        <!-- Network Type -->
+        <p>Network type: TRC20</p>
+
+        <!-- Amount to Send -->
+        <div class="copyable">
+            <span id="usdt-amount">$0.00</span>
+            <i class="fas fa-copy" onclick="copyText('usdt-amount')"></i>
+        </div>
+        <p>Click on the amount above to copy.</p>
+
+        <!-- Change Payment Method -->
+        <p><a class="change-payment" onclick="navigateTo('form1')">I want to change how I pay</a></p>
+    </div>
+
+    <!-- Form 5: Skrill Payment -->
+    <div class="form-container" id="form5">
+        <div class="top-bar">
+            <i class="fas fa-home" onclick="navigateTo('form1')"></i>
+            <span>Skrill Payment</span>
+        </div>
+
+        <!-- Payment Details -->
+        <div class="payment-details">
+            <p>Email: <span id="payment5-email">user@example.com</span></p>
+            <p>Credits you receive: <span id="payment5-credits">$0.00</span></p>
+            <p>Store URL: <a href="https://teletechhub.com" target="_blank">teletechhub.com</a></p>
+        </div>
+
+        <!-- Cancel Payment -->
+        <button onclick="cancelPayment()">Cancel Payment</button>
+
+        <!-- Pending Payment -->
+        <p>Pending Payment <div class="spinner"></div></p>
+
+        <!-- Skrill Email Address -->
+        <div class="copyable">
+            <span id="skrill-email">unlockmyapple3@gmail.com</span>
+            <i class="fas fa-copy" onclick="copyText('skrill-email')"></i>
+        </div>
+        <p>Click on the ID above to copy.</p>
+
+        <!-- Network Type -->
+        <p>Network type: TRC20</p>
+
+        <!-- Amount to Send -->
+        <div class="copyable">
+            <span id="skrill-amount">$0.00</span>
+            <i class="fas fa-copy" onclick="copyText('skrill-amount')"></i>
+        </div>
+        <p>Click on the amount above to copy.</p>
+
+        <!-- Change Payment Method -->
+        <p><a class="change-payment" onclick="navigateTo('form1')">I want to change how I pay</a></p>
+    </div>
 
     <script>
+        // Initialize variables to store form data
+        let formData = {
+            email: '',
+            deposit: 0,
+            fixedCharge: 0,
+            total: 0,
+            paymentMethod: '',
+            orderId: '',
+            grandTotal: 0
+        };
 
-                // Function to go to Fund2.html section
-        function goToFund2() {
-            const totalAmount = document.getElementById('total-amount').textContent;
-            const paymentMethod = document.getElementById('method').value;
-            
-            // Update Fund2.html values
-            document.getElementById('final-amount').textContent = totalAmount;
-            document.getElementById('sub-total').textContent = totalAmount;
-            document.getElementById('final-total').textContent = (parseFloat(totalAmount) + 1).toFixed(2); // Adding $1 fee
+        // Function to navigate to a specific form
+        function navigateTo(formId) {
+            // Hide all forms
+            const forms = document.querySelectorAll('.form-container');
+            forms.forEach(form => form.classList.remove('active'));
 
-            // Set the Credits you receive and Amount to send
-            document.getElementById('credit-receive').textContent = totalAmount;
-            document.getElementById('amount-to-send').textContent = (parseFloat(totalAmount) + 1).toFixed(2) + ' USDT'; // Adding $1 fee
-
-            // Set the payment method
-            document.getElementById('payment-method-fund2').textContent = paymentMethod;
-
-            // Hide Fund1 section and show Fund2 section
-            document.getElementById('fund1-section').classList.add('hidden');
-            document.getElementById('fund2-section').classList.remove('hidden');
+            // Show the selected form
+            document.getElementById(formId).classList.add('active');
         }
 
-
-        // Function to update displayed values
-        function updateValues() {
-            const depositInput = document.getElementById('deposit-input').value;
-            const depositAmount = parseFloat(depositInput || 0).toFixed(2);
-            const fixedCharge = (depositAmount * 0.02).toFixed(2); // Example fixed charge calculation
-            const totalAmount = (parseFloat(depositAmount) + parseFloat(fixedCharge)).toFixed(2);
-
-            document.getElementById('deposit-amount').textContent = depositAmount;
-            document.getElementById('fixed-charge').textContent = fixedCharge;
-            document.getElementById('total-amount').textContent = totalAmount;
-            document.getElementById('balance-after').textContent = totalAmount;
-        }
-
-        // Function to go to Fund1.html section
-        function goToFund1() {
-            const orderId = generateOrderId();
-            const currentDate = new Date();
-            const dueDate = new Date(currentDate);
-            dueDate.setDate(currentDate.getDate() + 7); // Due date is 7 days from now
-
-            document.getElementById('order-id').textContent = orderId;
-            document.getElementById('order-date').textContent = formatDate(currentDate);
-            document.getElementById('due-date').textContent = formatDate(dueDate);
-            document.getElementById('final-amount').textContent = document.getElementById('total-amount').textContent;
-            document.getElementById('sub-total').textContent = document.getElementById('total-amount').textContent;
-            document.getElementById('final-total').textContent = document.getElementById('total-amount').textContent;
-            document.getElementById('payment-method').textContent = document.getElementById('method').value;
-
-            document.getElementById('fund-section').classList.add('hidden');
-            document.getElementById('fund1-section').classList.remove('hidden');
-        }
-
-        // Function to generate a random Order ID
+        // Function to generate a unique Order ID
         function generateOrderId() {
-            return 'ORD-' + Math.floor(Math.random() * 1000000);
+            const timestamp = Date.now();
+            return 'tele#' + timestamp;
         }
 
-        // Function to format the date in MM/DD/YYYY format
-        function formatDate(date) {
-            const day = ('0' + date.getDate()).slice(-2);
-            const month = ('0' + (date.getMonth() + 1)).slice(-2);
-            const year = date.getFullYear();
-            return `${month}/${day}/${year}`;
+        // Function to format number to currency
+        function formatCurrency(amount) {
+            return '$' + parseFloat(amount).toFixed(2);
+        }
 
-            function copyText(elementId) {
-                let text = '';
-                if (elementId === 'email') {
-                    text = 'ahllnytl@gmail.com';
-                } else if (elementId === 'wallet') {
-                    text = 'TSTZITazf8bxv4yi9fWYE4qeHhmsQuspE2';
-                } else if (elementId === 'amount') {
-                    text = '51.5005 USDT';
-                }
-    
-                // Create a temporary input element to select and copy the text
-                const tempInput = document.createElement('input');
-                tempInput.value = text;
-                document.body.appendChild(tempInput);
-                tempInput.select();
-                document.execCommand('copy');
-                document.body.removeChild(tempInput);
-    
-                // Show the alert
-                const alertBox = document.getElementById('alert');
-                alertBox.style.display = 'block';
-    
-                // Hide the alert after 2 seconds
-                setTimeout(() => {
-                    alertBox.style.display = 'none';
-                }, 2000);
+        // Function to update calculations in Form 1
+        function updateCalculations() {
+            const depositInput = document.getElementById('deposit').value;
+            const deposit = parseFloat(depositInput) || 0;
+            const fixedCharge = 0; // Assuming fixed charge is $0.00 as per description
+            const total = deposit + fixedCharge;
+
+            // Update the display
+            document.getElementById('deposit-amount').innerText = formatCurrency(deposit);
+            document.getElementById('fixed-charge').innerText = formatCurrency(fixedCharge);
+            document.getElementById('total').innerHTML = `<strong>${formatCurrency(total)}</strong>`;
+            document.getElementById('balance-after').innerText = formatCurrency(total);
+
+            // Store in formData
+            formData.deposit = deposit;
+            formData.fixedCharge = fixedCharge;
+            formData.total = total;
+            formData.grandTotal = total; // Assuming grand total is same as total initially
+        }
+
+        // Event listeners for deposit input changes
+        document.getElementById('deposit').addEventListener('input', () => {
+            updateCalculations();
+        });
+
+        document.getElementById('payment-method').addEventListener('change', () => {
+            formData.paymentMethod = document.getElementById('payment-method').value;
+        });
+
+        // Function to handle Next button in Form 1
+        function goToForm2() {
+            // Validate email and deposit amount
+            const email = document.getElementById('email').value.trim();
+            const deposit = parseFloat(document.getElementById('deposit').value);
+
+            if (email === '') {
+                alert('Please enter your email.');
+                return;
+            }
+
+            if (isNaN(deposit) || deposit < 50 || deposit > 10000) {
+                alert('Please enter a valid deposit amount between $50 and $10,000.');
+                return;
+            }
+
+            // Get payment method
+            const paymentMethod = document.getElementById('payment-method').value;
+
+            // Update formData
+            formData.email = email;
+            formData.paymentMethod = paymentMethod;
+
+            // Generate Order ID
+            const orderId = generateOrderId();
+            formData.orderId = orderId;
+
+            // Update Form 2 with data
+            document.getElementById('order-id').innerText = orderId;
+            document.getElementById('receipt-email').innerText = email;
+            document.getElementById('receipt-order-id').innerText = orderId;
+            document.getElementById('current-date').innerText = getCurrentDate();
+            document.getElementById('payment-due').innerText = getCurrentDate();
+            document.getElementById('description-order-id').innerText = orderId;
+            document.getElementById('description-amount').innerText = formatCurrency(formData.total);
+            document.getElementById('summary-subtotal').innerText = formatCurrency(formData.total);
+            document.getElementById('summary-grandtotal').innerText = formatCurrency(formData.grandTotal);
+            document.getElementById('chosen-payment-method').innerText = capitalizeFirstLetter(paymentMethod);
+
+            // Update payment forms with data
+            document.getElementById('payment3-email').innerText = email;
+            document.getElementById('payment3-credits').innerText = formatCurrency(formData.grandTotal);
+            document.getElementById('binance-amount').innerText = formatCurrency(formData.grandTotal + 1); // Including $1 fee
+
+            document.getElementById('payment4-email').innerText = email;
+            document.getElementById('payment4-credits').innerText = formatCurrency(formData.grandTotal);
+            document.getElementById('usdt-amount').innerText = formatCurrency(formData.grandTotal + 1); // Including $1 fee
+
+            document.getElementById('payment5-email').innerText = email;
+            document.getElementById('payment5-credits').innerText = formatCurrency(formData.grandTotal);
+            document.getElementById('skrill-amount').innerText = formatCurrency(formData.grandTotal + 1); // Including $1 fee
+
+            // Navigate to Form 2
+            navigateTo('form2');
+        }
+
+        // Function to get current date in YYYY-MM-DD format
+        function getCurrentDate() {
+            const today = new Date();
+            const year = today.getFullYear();
+            let month = today.getMonth() + 1;
+            let day = today.getDate();
+
+            if (month < 10) month = '0' + month;
+            if (day < 10) day = '0' + day;
+
+            return `${year}-${month}-${day}`;
+        }
+
+        // Function to capitalize first letter
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
+        // Function to handle Proceed button in Form 2
+        function proceedToPayment() {
+            const paymentMethod = formData.paymentMethod;
+
+            if (paymentMethod === 'binance') {
+                navigateTo('form3');
+            } else if (paymentMethod === 'usdt') {
+                navigateTo('form4');
+            } else if (paymentMethod === 'skrill') {
+                navigateTo('form5');
+            } else {
+                alert('Invalid payment method selected.');
             }
         }
+
+        // Function to copy text to clipboard
+        function copyText(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                let alertMessage = '';
+                if (elementId === 'binance-id') {
+                    alertMessage = 'Binance ID copied successfully!';
+                } else if (elementId === 'usdt-wallet') {
+                    alertMessage = 'USDT Wallet Address copied successfully!';
+                } else if (elementId === 'skrill-email') {
+                    alertMessage = 'Skrill Email Address copied successfully!';
+                } else if (elementId === 'binance-amount' || elementId === 'usdt-amount' || elementId === 'skrill-amount') {
+                    alertMessage = 'Amount copied successfully!';
+                }
+                alert(alertMessage);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        }
+
+        // Function to handle Cancel Payment button
+        function cancelPayment() {
+            const confirmCancel = confirm('Are you sure you want to cancel the payment?');
+            if (confirmCancel) {
+                navigateTo('form1');
+            }
+        }
+
+        // Initial Setup
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set initial balance and other defaults if needed
+            updateCalculations();
+        });
     </script>
 </body>
 </html>
